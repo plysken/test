@@ -14,16 +14,23 @@
 			return x1 + x2;
 		}
 
+		var moneyIcon = "$"
+
 		window.onload = function(e){
+			// NUI Callback
 			window.addEventListener('message', function(event){
 				var item = event.data;
 
+				if(item.seticon == true)
+					moneyIcon = item.icon;
 				if(item.setmoney == true)
-					document.getElementById("cash").innerHTML = "<div><font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>$</font>" + addCommas(item.money);
+					document.getElementById("cash").innerHTML = "<div><font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>" + moneyIcon + "</font>" + addCommas(item.money);
+				if(item.setDirty_money == true)
+					document.getElementById("dirty_cash").innerHTML = "<div><font style='color: rgb(125, 0, 0); font-weight: 700; margin-right: 6px;'>" + moneyIcon + "</font>" + addCommas(item.dirty_money);
 				if(item.addcash == true){
 					$(".tiny").remove();
 
-					var element = $("<div class='tiny'>+<font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>$</font>"+addCommas(item.money)+"</div>")
+					var element = $("<div class='tiny'>+<font style='color: rgb(0, 125, 0); font-weight: 700; margin-right: 6px;'>" + moneyIcon + "</font>"+addCommas(item.money)+"</div>")
 					$("#money").append(element)
 
 					setTimeout(function(){
@@ -33,7 +40,7 @@
 				if(item.removecash == true){
 					$(".tiny").remove();
 					
-					var element = $("<div class='tiny'>-<font style='color: rgb(250, 0, 0); font-weight: 700; margin-right: 6px;'>$</font>"+addCommas(item.money)+"</div>")
+					var element = $("<div class='tiny'>-<font style='color: rgb(250, 0, 0); font-weight: 700; margin-right: 6px;'>" + moneyIcon + "</font>"+addCommas(item.money)+"</div>")
 					$("#money").append(element)
 
 					setTimeout(function(){
@@ -45,6 +52,7 @@
 				}
 				if(item.setDisplay == true){
 					$("#money").css('opacity', item.display)
+					$("#dirty_money").css('opacity', item.display)
 				}
 			})
 		}
@@ -73,7 +81,7 @@
 
 		#container {
 			position: absolute;
-			top: 50; right: 35;
+			top: 40; right: 40;
 		}
 	</style>
 </head>
@@ -86,6 +94,9 @@
 		<div id="money">
 
 			<div id="cash"/>
+		</div>
+		<div id="dirty_money"/>
+			<div id="dirty_cash"/>
 		</div>
 	</div>
 </body>
